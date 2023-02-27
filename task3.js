@@ -1,16 +1,23 @@
-function createLiker() {
+function createPerson({ name, skills } = { name: 'New User', skills: [] }) {
   return {
-    rating: 0,
-    like() {
-      this.rating += 1;
+    name: name,
+    skills: skills,
+    addSkill(skill) {
+      if (!this.skills.includes(skill)) {
+        this.skills.push(skill);
+      }
       return this;
     },
-    dislike() {
-      this.rating -= 1;
+    removeSkill(skill) {
+      const skillIndex = this.skills.indexOf(skill);
+      if (skillIndex >= 0) {
+        this.skills.splice(skillIndex, 1);
+      }
       return this;
     },
-    val() {
-      return this.rating;
+    addName(name) {
+      this.name = name;
+      return this;
     },
   };
 }

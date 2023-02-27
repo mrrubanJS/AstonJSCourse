@@ -1,27 +1,21 @@
-const errorMessage = {
-  invalidArr: 'В функцию getInterval были переданы невалидные параметры. Параметр arr должен содержать только числовые значения',
-  invalidFrom: 'В функцию getInterval были переданы невалидные параметры. Параметр from должен быть числом',
-  invalidTo: 'В функцию getInterval были переданы невалидные параметры. Параметр to должен быть числом',
-};
-function isNumber(num) {
-  return typeof num === 'number' && !Number.isNaN(num);
+function isPositiveInt(num) {
+  return Number.isInteger(num) && num > 0;
 }
 
-function getInterval(arr, from, to) {
-  if (arr.some((elem) => !isNumber(elem))) {
-    throw Error(errorMessage.invalidArr);
-  }
-  if (!isNumber(from)) {
-    throw Error(errorMessage.invalidFrom);
-  }
-  if (!isNumber(to)) {
-    throw Error(errorMessage.invalidTo);
-  }
+const errorMessage = ' the index cannot be a negative number or a fractional number ';
 
-  let arrFromTo = [];
-  if (from > to) {
-    return (arrFromTo = arr.filter((elem) => to <= elem && elem <= from));
-  }
+function addElementsToArray(arr, index) {
+  return function (...arg) {
+    const newArr = [];
+    if (!isPositiveInt(index) && index !== undefined) {
+      throw new Error(errorMessage);
+    }
+    if (!index || index > arr.length) {
+      newArr.push(...arr, ...arg);
+    } else {
+      newArr.push(...arr.slice(0, index), ...arg, ...arr.slice(index));
+    }
 
-  return (arrFromTo = arr.filter((elem) => from <= elem && elem <= to));
+    return newArr;
+  };
 }
